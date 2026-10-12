@@ -1,14 +1,14 @@
-// Java program to Construct BST from 
-// its given level order traversal
+```java
 import java.util.*;
 
 class Node {
     int data;
     Node left;
     Node right;
+
     Node(int val) {
         data = val;
-        left = null; 
+        left = null;
         right = null;
     }
 }
@@ -16,56 +16,100 @@ class Node {
 class Pair<X, Y> {
     public final X first;
     public final Y second;
-    public Pair(X first, Y second) {
+
+    Pair(X first, Y second) {
         this.first = first;
         this.second = second;
     }
 }
 
-class GFG {
+class Solution {
+
     static Node constructBst(int[] arr) {
         int n = arr.length;
-        
+        if (n == 0) return null;
+
         Node root = new Node(arr[0]);
-        Queue<Pair<Node, Pair<Integer, Integer>>> q = new LinkedList<>();
-        q.add(new Pair<>(root, new Pair<>(Integer.MIN_VALUE, Integer.MAX_VALUE)));
-        
+
+        Queue<Pair<Node, Pair<Integer, Integer>>> q =
+            new LinkedList<>();
+
+        q.add(new Pair<>(root,
+            new Pair<>(Integer.MIN_VALUE, Integer.MAX_VALUE)));
+
         int i = 1;
+
         while (i < n && !q.isEmpty()) {
             Pair<Node, Pair<Integer, Integer>> curr = q.poll();
-            
+
             Node node = curr.first;
             int low = curr.second.first;
             int high = curr.second.second;
-            
+
             // Check for left child
             if (i < n && arr[i] >= low && arr[i] < node.data) {
                 node.left = new Node(arr[i]);
-                q.add(new Pair<>(node.left, new Pair<>(low, node.data - 1)));
+
+                q.add(new Pair<>(node.left,
+                    new Pair<>(low, node.data - 1)));
+
                 i++;
             }
-            
+
             // Check for right child
             if (i < n && arr[i] > node.data && arr[i] <= high) {
                 node.right = new Node(arr[i]);
-                q.add(new Pair<>(node.right, new Pair<>(node.data + 1, high)));
+
+                q.add(new Pair<>(node.right,
+                    new Pair<>(node.data + 1, high)));
+
                 i++;
             }
         }
+
         return root;
     }
 
+    // Preorder: Root -> Left -> Right
     static void preOrder(Node root) {
         if (root == null) return;
-        
+
         System.out.print(root.data + " ");
         preOrder(root.left);
         preOrder(root.right);
     }
 
+    // Inorder: Left -> Root -> Right
+    static void inOrder(Node root) {
+        if (root == null) return;
+
+        inOrder(root.left);
+        System.out.print(root.data + " ");
+        inOrder(root.right);
+    }
+
+    // Postorder: Left -> Right -> Root
+    static void postOrder(Node root) {
+        if (root == null) return;
+
+        postOrder(root.left);
+        postOrder(root.right);
+        System.out.print(root.data + " ");
+    }
+
     public static void main(String[] args) {
         int[] arr = {7, 4, 12, 3, 6, 8, 1, 5, 10};
+
         Node root = constructBst(arr);
+
+        System.out.print("Preorder: ");
         preOrder(root);
+
+        System.out.print("\\nInorder: ");
+        inOrder(root);
+
+        System.out.print("\\nPostorder: ");
+        postOrder(root);
     }
 }
+```
