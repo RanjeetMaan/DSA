@@ -4,18 +4,12 @@ class Solution {
         if (root == null) {
             return 0;
         }
-
-        // If left subtree is empty, go through the right subtree
         if (root.left == null) {
             return 1 + minDepth(root.right);
         }
-
-        // If right subtree is empty, go through the left subtree
         if (root.right == null) {
             return 1 + minDepth(root.left);
         }
-
-        // If both children exist, choose the smaller depth
         return 1 + Math.min(minDepth(root.left),minDepth(root.right));
     }
 }
